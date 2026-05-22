@@ -1,0 +1,1050 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>INOVEX | Robótica Educativa</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<style>
+  :root {
+    --c: #00f5ff;
+    --p: #bf00ff;
+    --bg: #030308;
+    --bg2: #06060f;
+    --card: rgba(255,255,255,0.025);
+    --border: rgba(0,245,255,0.12);
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: #e2e8f0;
+    overflow-x: hidden;
+    cursor: none;
+  }
+
+  /* CUSTOM CURSOR */
+  .cursor {
+    position: fixed;
+    width: 10px; height: 10px;
+    background: var(--c);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9999;
+    transform: translate(-50%,-50%);
+    transition: transform 0.08s, width 0.2s, height 0.2s, background 0.2s;
+    mix-blend-mode: screen;
+  }
+  .cursor-ring {
+    position: fixed;
+    width: 36px; height: 36px;
+    border: 1px solid rgba(0,245,255,0.5);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9998;
+    transform: translate(-50%,-50%);
+    transition: transform 0.18s cubic-bezier(.25,.46,.45,.94), width 0.3s, height 0.3s;
+  }
+  body:has(a:hover) .cursor, body:has(button:hover) .cursor { width: 20px; height: 20px; background: var(--p); }
+  body:has(a:hover) .cursor-ring, body:has(button:hover) .cursor-ring { width: 60px; height: 60px; border-color: rgba(191,0,255,0.4); }
+
+  /* TYPOGRAPHY */
+  .font-display { font-family: 'Syne', sans-serif; }
+  .font-mono-custom { font-family: 'JetBrains Mono', monospace; }
+
+  /* GRAIN OVERLAY */
+  body::before {
+    content: '';
+    position: fixed; inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 100;
+    opacity: 0.4;
+  }
+
+  /* HEADER */
+  header {
+    position: fixed; top: 0; left: 0; right: 0;
+    z-index: 50;
+    padding: 1.25rem 2rem;
+    display: flex; align-items: center; justify-content: space-between;
+    background: rgba(3,3,8,0.7);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+  }
+
+  .logo-text {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.6rem;
+    font-weight: 800;
+    letter-spacing: -0.04em;
+    background: linear-gradient(135deg, var(--c), #8b5cf6);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  nav a {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.45);
+    text-decoration: none;
+    transition: color 0.2s;
+    position: relative;
+    padding-bottom: 3px;
+  }
+  nav a::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0;
+    width: 0; height: 1px;
+    background: var(--c);
+    transition: width 0.3s;
+  }
+  nav a:hover { color: #fff; }
+  nav a:hover::after { width: 100%; }
+
+  .btn-primary {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 0.6rem 1.4rem;
+    border-radius: 100px;
+    border: 1px solid var(--c);
+    color: var(--c);
+    background: transparent;
+    cursor: none;
+    transition: background 0.2s, color 0.2s, box-shadow 0.2s;
+    text-decoration: none;
+  }
+  .btn-primary:hover {
+    background: var(--c);
+    color: #000;
+    box-shadow: 0 0 30px rgba(0,245,255,0.3);
+  }
+
+  /* HERO */
+  #inicio {
+    min-height: 100vh;
+    display: flex; align-items: center;
+    position: relative;
+    overflow: hidden;
+    padding-top: 5rem;
+  }
+
+  /* STAR FIELD */
+  .stars {
+    position: absolute; inset: 0;
+    pointer-events: none;
+    overflow: hidden;
+  }
+  .star {
+    position: absolute;
+    background: #fff;
+    border-radius: 50%;
+    animation: twinkle var(--dur, 4s) ease-in-out infinite;
+    animation-delay: var(--delay, 0s);
+  }
+  @keyframes twinkle {
+    0%,100% { opacity: 0.1; transform: scale(1); }
+    50% { opacity: 0.8; transform: scale(1.4); }
+  }
+
+  /* CENTRAL ORB */
+  .orb-wrapper {
+    position: relative;
+    width: 380px; height: 380px;
+    display: flex; align-items: center; justify-content: center;
+    animation: float 7s ease-in-out infinite;
+  }
+  @keyframes float {
+    0%,100% { transform: translateY(0); }
+    50% { transform: translateY(-22px); }
+  }
+
+  .orb-ring {
+    position: absolute;
+    border-radius: 50%;
+    border: 1px solid;
+    animation: spin linear infinite;
+  }
+  .orb-ring:nth-child(1) {
+    width: 340px; height: 340px;
+    border-color: rgba(0,245,255,0.2);
+    animation-duration: 18s;
+  }
+  .orb-ring:nth-child(2) {
+    width: 280px; height: 280px;
+    border-color: rgba(191,0,255,0.25);
+    animation-duration: 12s;
+    animation-direction: reverse;
+  }
+  .orb-ring:nth-child(3) {
+    width: 220px; height: 220px;
+    border-color: rgba(0,245,255,0.15);
+    animation-duration: 8s;
+  }
+
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  .orb-logo {
+    width: 160px; height: 160px;
+    border-radius: 50%;
+    object-fit: cover;
+    position: relative;
+    z-index: 2;
+    box-shadow:
+      0 0 60px rgba(0,245,255,0.35),
+      0 0 120px rgba(191,0,255,0.2),
+      0 0 0 2px rgba(0,245,255,0.15);
+    animation: pulse 4s ease-in-out infinite;
+  }
+  @keyframes pulse {
+    0%,100% { box-shadow: 0 0 60px rgba(0,245,255,0.35), 0 0 120px rgba(191,0,255,0.2); }
+    50% { box-shadow: 0 0 90px rgba(0,245,255,0.55), 0 0 160px rgba(191,0,255,0.35); }
+  }
+
+  /* AURA BEHIND ORB */
+  .aura {
+    position: absolute;
+    width: 500px; height: 500px;
+    background: radial-gradient(circle, rgba(0,245,255,0.06) 0%, rgba(191,0,255,0.04) 40%, transparent 70%);
+    border-radius: 50%;
+    filter: blur(30px);
+    animation: aura-pulse 6s ease-in-out infinite;
+  }
+  @keyframes aura-pulse {
+    0%,100% { transform: scale(1); opacity: 0.7; }
+    50% { transform: scale(1.15); opacity: 1; }
+  }
+
+  /* HERO BADGE */
+  .hero-badge {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    background: rgba(0,245,255,0.06);
+    border: 1px solid rgba(0,245,255,0.2);
+    border-radius: 100px;
+    padding: 0.4rem 1rem;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--c);
+    margin-bottom: 1.5rem;
+  }
+  .hero-badge .dot {
+    width: 6px; height: 6px;
+    background: var(--c);
+    border-radius: 50%;
+    animation: blink 2s ease-in-out infinite;
+  }
+  @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.2} }
+
+  /* HERO TITLE */
+  .hero-title {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(2.8rem, 5.5vw, 5rem);
+    font-weight: 800;
+    line-height: 1;
+    letter-spacing: -0.03em;
+    color: #fff;
+  }
+  .hero-title .accent {
+    background: linear-gradient(135deg, var(--c) 0%, #8b5cf6 50%, var(--p) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  /* SCROLL INDICATOR */
+  .scroll-line {
+    position: absolute; bottom: 2rem; left: 50%; transform: translateX(-50%);
+    display: flex; flex-direction: column; align-items: center; gap: 0.4rem;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.55rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.3);
+  }
+  .scroll-line .line {
+    width: 1px; height: 48px;
+    background: linear-gradient(to bottom, var(--c), transparent);
+    animation: scroll-anim 2s ease-in-out infinite;
+  }
+  @keyframes scroll-anim {
+    0% { transform: scaleY(0); transform-origin: top; }
+    50% { transform: scaleY(1); transform-origin: top; }
+    51% { transform: scaleY(1); transform-origin: bottom; }
+    100% { transform: scaleY(0); transform-origin: bottom; }
+  }
+
+  /* SECTION SHARED */
+  section { padding: 6rem 0; }
+  .section-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--c);
+    margin-bottom: 1rem;
+  }
+  .section-title {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(2rem, 4vw, 3.5rem);
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    color: #fff;
+    line-height: 1.1;
+  }
+
+  /* DIVIDER */
+  .divider {
+    width: 100%;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(0,245,255,0.2), rgba(191,0,255,0.2), transparent);
+  }
+
+  /* CARDS */
+  .card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 2rem;
+    transition: border-color 0.3s, box-shadow 0.3s, transform 0.4s cubic-bezier(.25,.46,.45,.94);
+    position: relative;
+    overflow: hidden;
+  }
+  .card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at var(--mx,50%) var(--my,50%), rgba(0,245,255,0.05) 0%, transparent 60%);
+    opacity: 0;
+    transition: opacity 0.3s;
+    pointer-events: none;
+    border-radius: inherit;
+  }
+  .card:hover::before { opacity: 1; }
+  .card:hover {
+    border-color: rgba(0,245,255,0.3);
+    box-shadow: 0 20px 60px -15px rgba(0,245,255,0.12), 0 0 0 1px rgba(0,245,255,0.06);
+    transform: translateY(-4px);
+  }
+
+  /* ICON BOX */
+  .icon-box {
+    width: 52px; height: 52px;
+    border-radius: 14px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.25rem;
+    margin-bottom: 1.25rem;
+    flex-shrink: 0;
+  }
+  .icon-cyan { background: rgba(0,245,255,0.1); color: var(--c); border: 1px solid rgba(0,245,255,0.2); }
+  .icon-purple { background: rgba(191,0,255,0.1); color: var(--p); border: 1px solid rgba(191,0,255,0.2); }
+  .icon-violet { background: rgba(139,92,246,0.1); color: #8b5cf6; border: 1px solid rgba(139,92,246,0.2); }
+
+  /* PRODUCT CARDS */
+  .product-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 24px;
+    overflow: hidden;
+    transition: transform 0.35s cubic-bezier(.25,.46,.45,.94), box-shadow 0.35s;
+    position: relative;
+  }
+  .product-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 30px 60px -15px rgba(0,245,255,0.15);
+  }
+  .product-card.featured {
+    border-color: rgba(139,92,246,0.4);
+    box-shadow: 0 0 40px -10px rgba(139,92,246,0.2);
+  }
+  .product-img {
+    height: 200px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 5rem;
+    background: rgba(0,0,0,0.3);
+    border-bottom: 1px solid var(--border);
+    position: relative;
+  }
+  .product-badge {
+    position: absolute;
+    top: 1rem; right: 1rem;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.6rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 0.3rem 0.8rem;
+    border-radius: 100px;
+    border: 1px solid;
+  }
+  .badge-cyan { border-color: var(--c); color: var(--c); background: rgba(0,245,255,0.08); }
+  .badge-violet { border-color: #8b5cf6; color: #a78bfa; background: rgba(139,92,246,0.08); }
+  .badge-featured {
+    position: absolute; top: 0; left: 0;
+    background: linear-gradient(135deg, #8b5cf6, var(--p));
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.55rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    padding: 0.3rem 1rem;
+    border-radius: 0 0 12px 0;
+    color: #fff;
+  }
+
+  .price {
+    font-family: 'Syne', sans-serif;
+    font-size: 2rem;
+    font-weight: 800;
+    color: #fff;
+    letter-spacing: -0.04em;
+  }
+  .price-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.6rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.3);
+    display: block;
+    margin-bottom: 0.2rem;
+  }
+
+  .btn-buy {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 0.65rem 1.3rem;
+    border-radius: 100px;
+    border: 1px solid rgba(255,255,255,0.15);
+    background: rgba(255,255,255,0.05);
+    color: #fff;
+    cursor: none;
+    transition: all 0.2s;
+    white-space: nowrap;
+  }
+  .btn-buy:hover {
+    background: #fff;
+    color: #000;
+    border-color: #fff;
+  }
+  .btn-buy-featured {
+    background: linear-gradient(135deg, var(--c), #8b5cf6);
+    border-color: transparent;
+    color: #000;
+    font-weight: 600;
+  }
+  .btn-buy-featured:hover {
+    opacity: 0.85;
+    color: #000;
+    background: linear-gradient(135deg, var(--c), #8b5cf6);
+  }
+
+  /* TEAM CARDS */
+  .team-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 1.75rem;
+    text-align: center;
+    transition: border-color 0.3s, transform 0.3s;
+  }
+  .team-card:hover {
+    border-color: rgba(0,245,255,0.25);
+    transform: translateY(-4px);
+  }
+  .team-avatar {
+    width: 60px; height: 60px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.1);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.5rem;
+    margin: 0 auto 1rem;
+  }
+  .team-role {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.6rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--c);
+    margin-bottom: 0.4rem;
+  }
+  .team-name {
+    font-family: 'Syne', sans-serif;
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: #fff;
+    line-height: 1.4;
+  }
+
+  /* MARKET PILLS */
+  .pill {
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 12px;
+    padding: 1.25rem 1rem;
+    text-align: center;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.85rem;
+    color: rgba(255,255,255,0.6);
+    background: rgba(255,255,255,0.015);
+    transition: border-color 0.2s, color 0.2s;
+  }
+  .pill:hover { border-color: rgba(0,245,255,0.2); color: #fff; }
+
+  .tag {
+    border: 1px solid rgba(0,245,255,0.2);
+    border-radius: 100px;
+    padding: 0.4rem 1.1rem;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--c);
+    background: rgba(0,245,255,0.05);
+  }
+
+  /* FOOTER */
+  footer {
+    background: #000;
+    border-top: 1px solid rgba(255,255,255,0.04);
+    padding: 4rem 0 2rem;
+  }
+  .footer-link {
+    display: flex; align-items: center; gap: 0.75rem;
+    font-size: 0.85rem;
+    color: rgba(255,255,255,0.45);
+    text-decoration: none;
+    transition: color 0.2s;
+    font-family: 'DM Sans', sans-serif;
+  }
+  .footer-link:hover { color: rgba(255,255,255,0.9); }
+  .footer-link i { width: 14px; color: var(--p); font-size: 0.75rem; }
+
+  /* CONTAINER */
+  .container { max-width: 1200px; margin: 0 auto; padding: 0 2rem; }
+
+  /* SCROLL REVEAL */
+  .reveal {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+  .reveal.visible {
+    opacity: 1;
+    transform: none;
+  }
+  .reveal-delay-1 { transition-delay: 0.1s; }
+  .reveal-delay-2 { transition-delay: 0.2s; }
+  .reveal-delay-3 { transition-delay: 0.3s; }
+
+  /* GRID RESPONSIVE */
+  @media (max-width: 768px) {
+    .hero-title { font-size: 2.5rem; }
+    .orb-wrapper { width: 260px; height: 260px; }
+    .orb-logo { width: 110px; height: 110px; }
+    .orb-ring:nth-child(1) { width: 240px; height: 240px; }
+    .orb-ring:nth-child(2) { width: 190px; height: 190px; }
+    .orb-ring:nth-child(3) { width: 150px; height: 150px; }
+    .aura { width: 300px; height: 300px; }
+    header nav { display: none; }
+  }
+
+  /* COUNTER */
+  .stat-number {
+    font-family: 'Syne', sans-serif;
+    font-size: 2.8rem;
+    font-weight: 800;
+    background: linear-gradient(135deg, var(--c), #8b5cf6);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    letter-spacing: -0.04em;
+    line-height: 1;
+  }
+  .stat-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.4);
+    margin-top: 0.4rem;
+  }
+
+  /* LOGO IMG */
+  .logo-img {
+    width: 32px; height: 32px;
+    border-radius: 8px;
+    object-fit: cover;
+    border: 1px solid rgba(0,245,255,0.3);
+    box-shadow: 0 0 12px rgba(0,245,255,0.2);
+  }
+  .logo-img-footer {
+    width: 36px; height: 36px;
+    border-radius: 9px;
+    object-fit: cover;
+    border: 1px solid rgba(0,245,255,0.3);
+    box-shadow: 0 0 12px rgba(0,245,255,0.2);
+  }
+</style>
+</head>
+<body>
+
+<!-- CURSOR -->
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<!-- HEADER -->
+<header>
+  <div style="display:flex;align-items:center;gap:0.75rem;">
+    <img src="https://i.ibb.co/nqb43XD5/Whats-App-Image-2026-05-14-at-1-10-15-PM.jpg"
+         alt="INOVEX Logo"
+         class="logo-img">
+    <span class="logo-text">INOVEX</span>
+  </div>
+
+  <nav style="display:flex;gap:2.5rem;">
+    <a href="#inicio">Inicio</a>
+    <a href="#nosotros">Nosotros</a>
+    <a href="#productos">Productos</a>
+    <a href="#servicios">Servicios</a>
+    <a href="#equipo">Equipo</a>
+    <a href="#contacto">Contacto</a>
+  </nav>
+
+  <div style="display:flex;gap:0.75rem;align-items:center;">
+    <a href="https://instagram.com/inovex.com.mx" target="_blank" class="btn-primary" style="display:flex;align-items:center;gap:0.5rem;">
+      <i class="fab fa-instagram"></i> Instagram
+    </a>
+    <a href="#contacto" class="btn-primary" style="background:var(--c);color:#000;border-color:var(--c);">Contáctanos</a>
+  </div>
+</header>
+
+<!-- HERO -->
+<section id="inicio" style="background: radial-gradient(ellipse 80% 60% at 70% 50%, rgba(0,245,255,0.04) 0%, transparent 60%), radial-gradient(ellipse 60% 50% at 30% 60%, rgba(191,0,255,0.04) 0%, transparent 60%), var(--bg);">
+  <!-- Stars -->
+  <div class="stars" id="stars"></div>
+
+  <div class="container" style="display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:center;position:relative;z-index:2;">
+    <!-- Left -->
+    <div>
+      <div class="hero-badge">
+        <span class="dot"></span>
+        Tecnología Educativa Mexicana
+      </div>
+      <h1 class="hero-title" style="margin-bottom:1.5rem;">
+        TECNOLOGÍA<br>QUE <span class="accent">TRANSFORMA</span><br>LO IMAGINABLE
+      </h1>
+      <p style="font-size:1.05rem;color:rgba(255,255,255,0.5);max-width:420px;line-height:1.7;margin-bottom:2.5rem;font-weight:300;">
+        En INOVEX diseñamos kits de robótica educativa que convierten el aula en laboratorio del futuro. Desde primaria hasta universidad.
+      </p>
+      <div style="display:flex;gap:1rem;flex-wrap:wrap;">
+        <a href="#productos" class="btn-primary" style="background:var(--c);color:#000;border-color:var(--c);font-weight:600;padding:0.8rem 2rem;font-size:0.75rem;">
+          Explorar Kits &rarr;
+        </a>
+        <a href="#nosotros" class="btn-primary" style="padding:0.8rem 2rem;font-size:0.75rem;">
+          Conócenos
+        </a>
+      </div>
+
+      <!-- Stats -->
+      <div style="display:flex;gap:3rem;margin-top:3.5rem;padding-top:2rem;border-top:1px solid rgba(255,255,255,0.06);">
+        <div>
+          <div class="stat-number">3</div>
+          <div class="stat-label">Niveles de kits</div>
+        </div>
+        <div>
+          <div class="stat-number">100%</div>
+          <div class="stat-label">Hecho en México</div>
+        </div>
+        <div>
+          <div class="stat-number">4+</div>
+          <div class="stat-label">Niveles educativos</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right: Logo flotante con anillos -->
+    <div style="display:flex;justify-content:center;position:relative;">
+      <div class="aura"></div>
+      <div class="orb-wrapper">
+        <div class="orb-ring"></div>
+        <div class="orb-ring"></div>
+        <div class="orb-ring"></div>
+        <img src="https://i.ibb.co/nqb43XD5/Whats-App-Image-2026-05-14-at-1-10-15-PM.jpg"
+             alt="INOVEX Logo"
+             class="orb-logo">
+      </div>
+    </div>
+  </div>
+
+  <div class="scroll-line">
+    <span>scroll</span>
+    <div class="line"></div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- NOSOTROS -->
+<section id="nosotros" style="background:var(--bg2);">
+  <div class="container">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:5rem;align-items:center;">
+      <div class="reveal">
+        <p class="section-label">¿Quiénes somos?</p>
+        <h2 class="section-title" style="margin-bottom:1.5rem;">INOVEX</h2>
+        <p style="color:rgba(255,255,255,0.55);line-height:1.8;margin-bottom:1.25rem;font-weight:300;">
+          Microempresa mexicana dedicada al <span style="color:var(--c);font-weight:500;">diseño, fabricación y comercialización</span> de kits de robótica educativa, alineados a planes oficiales de estudio.
+        </p>
+        <p style="color:rgba(255,255,255,0.45);line-height:1.8;font-weight:300;">
+          Enfocados en enseñar habilidades tecnológicas, científicas y de programación para todos los niveles educativos, rompiendo los esquemas tradicionales.
+        </p>
+      </div>
+
+      <div class="card reveal reveal-delay-1">
+        <p class="section-label" style="margin-bottom:1.25rem;">Nuestra esencia</p>
+        <div style="display:flex;flex-direction:column;gap:1rem;">
+          <div style="display:flex;align-items:center;gap:1rem;padding:0.75rem;border-radius:12px;background:rgba(0,245,255,0.04);">
+            <div style="width:8px;height:8px;border-radius:50%;background:var(--c);flex-shrink:0;"></div>
+            <span style="color:rgba(255,255,255,0.7);font-size:0.9rem;">Innovación constante</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:1rem;padding:0.75rem;border-radius:12px;background:rgba(191,0,255,0.04);">
+            <div style="width:8px;height:8px;border-radius:50%;background:var(--p);flex-shrink:0;"></div>
+            <span style="color:rgba(255,255,255,0.7);font-size:0.9rem;">Calidad mexicana</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:1rem;padding:0.75rem;border-radius:12px;background:rgba(0,245,255,0.04);">
+            <div style="width:8px;height:8px;border-radius:50%;background:var(--c);flex-shrink:0;"></div>
+            <span style="color:rgba(255,255,255,0.7);font-size:0.9rem;">Enfoque educativo</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:1rem;padding:0.75rem;border-radius:12px;background:rgba(191,0,255,0.04);">
+            <div style="width:8px;height:8px;border-radius:50%;background:var(--p);flex-shrink:0;"></div>
+            <span style="color:rgba(255,255,255,0.7);font-size:0.9rem;">Soporte técnico experto</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Misión Visión Objetivo -->
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;margin-top:5rem;">
+      <div class="card reveal">
+        <div class="icon-box icon-cyan"><i class="fas fa-bullseye"></i></div>
+        <h3 class="font-display" style="font-family:'Syne',sans-serif;font-size:1.3rem;font-weight:700;margin-bottom:0.75rem;letter-spacing:-0.02em;">Misión</h3>
+        <p style="color:rgba(255,255,255,0.45);font-size:0.88rem;line-height:1.7;font-weight:300;">Transformar ideas en soluciones efectivas, combinando innovación, calidad y compromiso. Productos prácticos y actualizados para impulsar el aprendizaje.</p>
+      </div>
+      <div class="card reveal reveal-delay-1">
+        <div class="icon-box icon-purple"><i class="fas fa-eye"></i></div>
+        <h3 class="font-display" style="font-family:'Syne',sans-serif;font-size:1.3rem;font-weight:700;margin-bottom:0.75rem;letter-spacing:-0.02em;">Visión</h3>
+        <p style="color:rgba(255,255,255,0.45);font-size:0.88rem;line-height:1.7;font-weight:300;">Ser la empresa líder en tecnología educativa, reconocida por innovación, excelencia y aporte al aprendizaje tecnológico en México y Latinoamérica.</p>
+      </div>
+      <div class="card reveal reveal-delay-2">
+        <div class="icon-box icon-violet"><i class="fas fa-flag"></i></div>
+        <h3 class="font-display" style="font-family:'Syne',sans-serif;font-size:1.3rem;font-weight:700;margin-bottom:0.75rem;letter-spacing:-0.02em;">Objetivo</h3>
+        <p style="color:rgba(255,255,255,0.45);font-size:0.88rem;line-height:1.7;font-weight:300;">Brindar herramientas que permitan aprender y aplicar conocimientos técnicos. Apoyar la formación de estudiantes, docentes y profesionales.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- PRODUCTOS -->
+<section id="productos" style="background:var(--bg);">
+  <div class="container">
+    <div style="text-align:center;margin-bottom:4rem;" class="reveal">
+      <p class="section-label">Ecosistema Hardware</p>
+      <h2 class="section-title">Kits Educativos</h2>
+    </div>
+
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;">
+      <!-- Kit Básico -->
+      <div class="product-card reveal">
+        <div class="product-img">
+          🔧
+          <span class="product-badge badge-cyan">Básico</span>
+        </div>
+        <div style="padding:1.75rem;">
+          <h3 style="font-family:'Syne',sans-serif;font-size:1.4rem;font-weight:700;letter-spacing:-0.02em;margin-bottom:0.25rem;">Kit Básico</h3>
+          <p style="font-family:'JetBrains Mono',monospace;font-size:0.6rem;letter-spacing:0.15em;text-transform:uppercase;color:rgba(255,255,255,0.3);margin-bottom:1.25rem;">Primaria · Secundaria</p>
+          <ul style="list-style:none;display:flex;flex-direction:column;gap:0.6rem;margin-bottom:1.75rem;">
+            <li style="font-size:0.85rem;color:rgba(255,255,255,0.55);display:flex;align-items:center;gap:0.6rem;"><i class="fas fa-chevron-right" style="font-size:0.5rem;color:var(--c);"></i>Lógica y razonamiento</li>
+            <li style="font-size:0.85rem;color:rgba(255,255,255,0.55);display:flex;align-items:center;gap:0.6rem;"><i class="fas fa-chevron-right" style="font-size:0.5rem;color:var(--c);"></i>Mecánica básica</li>
+            <li style="font-size:0.85rem;color:rgba(255,255,255,0.55);display:flex;align-items:center;gap:0.6rem;"><i class="fas fa-chevron-right" style="font-size:0.5rem;color:var(--c);"></i>Circuitos simples</li>
+          </ul>
+          <div style="display:flex;justify-content:flex-end;align-items:center;">
+            <button class="btn-buy" onclick="alert('¡Gracias por tu interés! Te contactaremos pronto.')">Adquirir</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Kit Intermedio (featured) -->
+      <div class="product-card featured reveal reveal-delay-1" style="transform:translateY(-12px);">
+        <div class="badge-featured">Más popular</div>
+        <div class="product-img" style="background:rgba(139,92,246,0.05);">
+          🤖
+          <span class="product-badge badge-violet">Intermedio</span>
+        </div>
+        <div style="padding:1.75rem;">
+          <h3 style="font-family:'Syne',sans-serif;font-size:1.4rem;font-weight:700;letter-spacing:-0.02em;margin-bottom:0.25rem;">Kit Intermedio</h3>
+          <p style="font-family:'JetBrains Mono',monospace;font-size:0.6rem;letter-spacing:0.15em;text-transform:uppercase;color:rgba(255,255,255,0.3);margin-bottom:1.25rem;">Bachillerato</p>
+          <ul style="list-style:none;display:flex;flex-direction:column;gap:0.6rem;margin-bottom:1.75rem;">
+            <li style="font-size:0.85rem;color:rgba(255,255,255,0.55);display:flex;align-items:center;gap:0.6rem;"><i class="fas fa-chevron-right" style="font-size:0.5rem;color:#8b5cf6;"></i>Programación avanzada</li>
+            <li style="font-size:0.85rem;color:rgba(255,255,255,0.55);display:flex;align-items:center;gap:0.6rem;"><i class="fas fa-chevron-right" style="font-size:0.5rem;color:#8b5cf6;"></i>Automatización autónoma</li>
+            <li style="font-size:0.85rem;color:rgba(255,255,255,0.55);display:flex;align-items:center;gap:0.6rem;"><i class="fas fa-chevron-right" style="font-size:0.5rem;color:#8b5cf6;"></i>Conectividad IoT WiFi</li>
+          </ul>
+          <div style="display:flex;justify-content:flex-end;align-items:center;">
+            <button class="btn-buy btn-buy-featured" onclick="alert('¡Gracias por tu interés! Te contactaremos pronto.')">Adquirir</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Kit Avanzado -->
+      <div class="product-card reveal reveal-delay-2">
+        <div class="product-img">
+          🧠
+          <span class="product-badge badge-cyan">Avanzado</span>
+        </div>
+        <div style="padding:1.75rem;">
+          <h3 style="font-family:'Syne',sans-serif;font-size:1.4rem;font-weight:700;letter-spacing:-0.02em;margin-bottom:0.25rem;">Kit Avanzado</h3>
+          <p style="font-family:'JetBrains Mono',monospace;font-size:0.6rem;letter-spacing:0.15em;text-transform:uppercase;color:rgba(255,255,255,0.3);margin-bottom:1.25rem;">Universidad</p>
+          <ul style="list-style:none;display:flex;flex-direction:column;gap:0.6rem;margin-bottom:1.75rem;">
+            <li style="font-size:0.85rem;color:rgba(255,255,255,0.55);display:flex;align-items:center;gap:0.6rem;"><i class="fas fa-chevron-right" style="font-size:0.5rem;color:var(--c);"></i>Internet de las Cosas</li>
+            <li style="font-size:0.85rem;color:rgba(255,255,255,0.55);display:flex;align-items:center;gap:0.6rem;"><i class="fas fa-chevron-right" style="font-size:0.5rem;color:var(--c);"></i>Modelos de IA integrados</li>
+            <li style="font-size:0.85rem;color:rgba(255,255,255,0.55);display:flex;align-items:center;gap:0.6rem;"><i class="fas fa-chevron-right" style="font-size:0.5rem;color:var(--c);"></i>Telemetría remota</li>
+          </ul>
+          <div style="display:flex;justify-content:flex-end;align-items:center;">
+            <button class="btn-buy" onclick="alert('¡Gracias por tu interés! Te contactaremos pronto.')">Adquirir</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- SERVICIOS -->
+<section id="servicios" style="background:var(--bg2);">
+  <div class="container">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:5rem;">
+      <!-- Productos adicionales -->
+      <div>
+        <p class="section-label reveal">Componentes</p>
+        <h2 class="section-title reveal" style="margin-bottom:2.5rem;">Otros Productos</h2>
+        <div style="display:flex;flex-direction:column;gap:1rem;">
+          <div class="card reveal" style="display:flex;gap:1.25rem;align-items:flex-start;">
+            <div class="icon-box icon-cyan" style="margin-bottom:0;flex-shrink:0;">🖐️</div>
+            <div>
+              <h4 style="font-family:'Syne',sans-serif;font-weight:700;margin-bottom:0.4rem;letter-spacing:-0.02em;">Kit de Mano Robótica</h4>
+              <p style="color:rgba(255,255,255,0.45);font-size:0.85rem;line-height:1.6;font-weight:300;">Cinemática programable para proyectos avanzados de ingeniería y anatomía artificial.</p>
+            </div>
+          </div>
+          <div class="card reveal reveal-delay-1" style="display:flex;gap:1.25rem;align-items:flex-start;">
+            <div class="icon-box icon-purple" style="margin-bottom:0;flex-shrink:0;">🔧</div>
+            <div>
+              <h4 style="font-family:'Syne',sans-serif;font-weight:700;margin-bottom:0.4rem;letter-spacing:-0.02em;">Kit de Pinza Robótica</h4>
+              <p style="color:rgba(255,255,255,0.45);font-size:0.85rem;line-height:1.6;font-weight:300;">Agarre de alta precisión mecánico y automatizado mediante servo-control programable.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Servicios -->
+      <div>
+        <p class="section-label reveal">Soporte integral</p>
+        <h2 class="section-title reveal" style="margin-bottom:2.5rem;">Servicios</h2>
+        <div class="card reveal" style="display:flex;flex-direction:column;gap:1.5rem;">
+          <div style="display:flex;gap:1rem;align-items:flex-start;">
+            <div class="icon-box icon-cyan" style="margin-bottom:0;flex-shrink:0;width:44px;height:44px;font-size:1rem;"><i class="fas fa-chalkboard-teacher"></i></div>
+            <div>
+              <h4 style="font-family:'Syne',sans-serif;font-weight:700;margin-bottom:0.25rem;font-size:1rem;letter-spacing:-0.02em;">Capacitación Docente</h4>
+              <p style="color:rgba(255,255,255,0.4);font-size:0.82rem;line-height:1.6;font-weight:300;">Formación técnico-pedagógica especializada para profesores en áreas STEM.</p>
+            </div>
+          </div>
+          <div style="height:1px;background:rgba(255,255,255,0.05);"></div>
+          <div style="display:flex;gap:1rem;align-items:flex-start;">
+            <div class="icon-box icon-purple" style="margin-bottom:0;flex-shrink:0;width:44px;height:44px;font-size:1rem;"><i class="fas fa-headset"></i></div>
+            <div>
+              <h4 style="font-family:'Syne',sans-serif;font-weight:700;margin-bottom:0.25rem;font-size:1rem;letter-spacing:-0.02em;">Soporte Técnico Postventa</h4>
+              <p style="color:rgba(255,255,255,0.4);font-size:0.82rem;line-height:1.6;font-weight:300;">Asistencia continua, resolución de incidencias en código y actualización de firmware.</p>
+            </div>
+          </div>
+          <div style="height:1px;background:rgba(255,255,255,0.05);"></div>
+          <div style="display:flex;gap:1rem;align-items:flex-start;">
+            <div class="icon-box icon-violet" style="margin-bottom:0;flex-shrink:0;width:44px;height:44px;font-size:1rem;"><i class="fas fa-handshake"></i></div>
+            <div>
+              <h4 style="font-family:'Syne',sans-serif;font-weight:700;margin-bottom:0.25rem;font-size:1rem;letter-spacing:-0.02em;">Asesoría Educativa</h4>
+              <p style="color:rgba(255,255,255,0.4);font-size:0.82rem;line-height:1.6;font-weight:300;">Diseño e implementación curricular personalizada por institución educativa.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- EQUIPO -->
+<section id="equipo" style="background:var(--bg);">
+  <div class="container">
+    <div style="text-align:center;margin-bottom:4rem;" class="reveal">
+      <p class="section-label">Las personas detrás</p>
+      <h2 class="section-title">Equipo Directivo</h2>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:1.25rem;">
+      <div class="team-card reveal">
+        <div class="team-avatar">👔</div>
+        <div class="team-role">Dirección General</div>
+        <div class="team-name">Olvera Soto<br>Abidan Sabas</div>
+      </div>
+      <div class="team-card reveal reveal-delay-1">
+        <div class="team-avatar">⚙️</div>
+        <div class="team-role">Operaciones</div>
+        <div class="team-name">Zuñiga Rdz. S.<br>Sánchez Salazar L.</div>
+      </div>
+      <div class="team-card reveal reveal-delay-2">
+        <div class="team-avatar">📣</div>
+        <div class="team-role">Marketing & Ventas</div>
+        <div class="team-name">Ventura Roquillo J.<br>Nabor Peña A.</div>
+      </div>
+      <div class="team-card reveal reveal-delay-3">
+        <div class="team-avatar">📋</div>
+        <div class="team-role">Asist. Administrativo</div>
+        <div class="team-name">Palacios Calderón<br>Cristian D.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- PÚBLICO OBJETIVO -->
+<section style="background:var(--bg2);">
+  <div class="container" style="text-align:center;">
+    <p class="section-label reveal">Mercado objetivo</p>
+    <h2 class="section-title reveal" style="margin-bottom:3rem;">Público Objetivo</h2>
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;margin-bottom:1.5rem;" class="reveal">
+      <div class="pill">Primaria</div>
+      <div class="pill">Secundaria</div>
+      <div class="pill">Bachillerato</div>
+      <div class="pill">Universidad</div>
+    </div>
+    <div style="display:flex;flex-wrap:wrap;justify-content:center;gap:0.75rem;" class="reveal reveal-delay-1">
+      <span class="tag">Docentes</span>
+      <span class="tag">Instituciones Educativas</span>
+      <span class="tag" style="border-color:rgba(191,0,255,0.25);color:var(--p);background:rgba(191,0,255,0.05);">Hobbistas & Makers</span>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer id="contacto">
+  <div class="container">
+    <div style="display:grid;grid-template-columns:2fr 1fr 1fr;gap:4rem;margin-bottom:3rem;">
+      <div>
+        <div style="display:flex;align-items:center;gap:0.75rem;margin-bottom:1.25rem;">
+          <img src="https://i.ibb.co/nqb43XD5/Whats-App-Image-2026-05-14-at-1-10-15-PM.jpg"
+               alt="INOVEX Logo"
+               class="logo-img-footer">
+          <span class="logo-text">INOVEX</span>
+        </div>
+        <p style="color:rgba(255,255,255,0.35);font-size:0.85rem;line-height:1.7;max-width:300px;font-weight:300;">
+          Tecnología que revoluciona el aprendizaje de la robótica y la programación en México.
+        </p>
+      </div>
+
+      <div>
+        <p style="font-family:'JetBrains Mono',monospace;font-size:0.65rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--c);margin-bottom:1.25rem;">Contacto</p>
+        <div style="display:flex;flex-direction:column;gap:0.9rem;">
+          <a href="tel:+525572857501" class="footer-link"><i class="fas fa-phone"></i>+52 55 7285 7501</a>
+          <a href="mailto:inovex.com@gmail.com" class="footer-link"><i class="fas fa-envelope"></i>inovex.com@gmail.com</a>
+          <a href="https://instagram.com/inovex.com.mx" target="_blank" class="footer-link"><i class="fab fa-instagram"></i>@inovex.com.mx</a>
+        </div>
+      </div>
+
+      <div>
+        <p style="font-family:'JetBrains Mono',monospace;font-size:0.65rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--c);margin-bottom:1.25rem;">Ubicación</p>
+        <p style="color:rgba(255,255,255,0.4);font-size:0.85rem;line-height:1.6;font-weight:300;">Ciudad de México<br>México</p>
+      </div>
+    </div>
+
+    <div style="border-top:1px solid rgba(255,255,255,0.04);padding-top:1.75rem;display:flex;justify-content:space-between;align-items:center;">
+      <p style="font-family:'JetBrains Mono',monospace;font-size:0.6rem;letter-spacing:0.1em;color:rgba(255,255,255,0.2);">© 2026 INOVEX — Engineered for future innovators.</p>
+      <p style="font-family:'JetBrains Mono',monospace;font-size:0.6rem;letter-spacing:0.1em;color:rgba(255,255,255,0.15);">Hecho con pasión por la robótica educativa</p>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // CURSOR
+  const cursor = document.getElementById('cursor');
+  const ring = document.getElementById('cursorRing');
+  let mx = 0, my = 0, rx = 0, ry = 0;
+  document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; cursor.style.left = mx + 'px'; cursor.style.top = my + 'px'; });
+  function animRing() {
+    rx += (mx - rx) * 0.12;
+    ry += (my - ry) * 0.12;
+    ring.style.left = rx + 'px';
+    ring.style.top = ry + 'px';
+    requestAnimationFrame(animRing);
+  }
+  animRing();
+
+  // CARD GLOW FOLLOW
+  document.querySelectorAll('.card').forEach(card => {
+    card.addEventListener('mousemove', e => {
+      const r = card.getBoundingClientRect();
+      card.style.setProperty('--mx', ((e.clientX - r.left) / r.width * 100) + '%');
+      card.style.setProperty('--my', ((e.clientY - r.top) / r.height * 100) + '%');
+    });
+  });
+
+  // STARS
+  const starsEl = document.getElementById('stars');
+  for (let i = 0; i < 80; i++) {
+    const s = document.createElement('div');
+    s.className = 'star';
+    const size = Math.random() * 2 + 0.5;
+    s.style.cssText = `width:${size}px;height:${size}px;left:${Math.random()*100}%;top:${Math.random()*100}%;--dur:${3+Math.random()*5}s;--delay:${Math.random()*5}s;`;
+    starsEl.appendChild(s);
+  }
+
+  // SCROLL REVEAL
+  const reveals = document.querySelectorAll('.reveal');
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); } });
+  }, { threshold: 0.12 });
+  reveals.forEach(el => obs.observe(el));
+
+  // SMOOTH SCROLL
+  document.querySelectorAll('a[href^="#"]').forEach(a => {
+    a.addEventListener('click', e => {
+      const t = document.querySelector(a.getAttribute('href'));
+      if (t) { e.preventDefault(); t.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
+    });
+  });
+
+  // EASTER EGG
+  document.addEventListener('keydown', e => {
+    if (e.key.toLowerCase() === 'r') {
+      document.body.style.transition = 'filter 0.8s';
+      document.body.style.filter = 'hue-rotate(120deg) saturate(1.5)';
+      setTimeout(() => document.body.style.filter = 'none', 1500);
+    }
+  });
+</script>
+</body>
+</html>
