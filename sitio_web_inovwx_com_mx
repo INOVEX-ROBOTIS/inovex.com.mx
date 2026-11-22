@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>INOVEX | Kit de Pinza Robótica — Feria Microempresarial</title>
+<meta name="description" content="INOVEX, microempresa mexicana de robótica educativa. Kit Integral de Pinza Robótica compatible con Arduino y ESP32 por $480 MXN. Cotiza para tu escuela o taller.">
+<meta name="theme-color" content="#030816">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@500;700;800&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#030816;--b:#2f8bff;--c:#38d0ff;--s:#cfd8e8;--t:#eaf1ff;--m:rgba(234,241,255,.64);--g:rgba(255,255,255,.045);--l:rgba(80,160,255,.18);color-scheme:dark;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+*,*::before,*::after{box-sizing:inherit;margin:0;padding:0}
+html{scroll-behavior:smooth;scroll-padding-top:calc(80px + env(safe-area-inset-top,0px))}
+body{background:var(--bg);color:var(--t);font-family:Inter,system-ui,-apple-system,'Segoe UI',sans-serif;line-height:1.65;overflow-x:hidden}
+a{color:inherit;text-decoration:none}img{max-width:100%;display:block}
+h1,h2,h3{font-family:Sora,'Helvetica Neue',system-ui,sans-serif;line-height:1.1;letter-spacing:-.03em}
+.w{max-width:1180px;margin:0 auto;padding:0 1.4rem}
+section{padding:6.5rem 0;position:relative}
+.k{display:inline-block;font:600 .7rem ui-monospace,Menlo,monospace;letter-spacing:.2em;text-transform:uppercase;color:var(--c);margin-bottom:1rem}
+h2{font-size:clamp(2rem,4.6vw,3.3rem);margin-bottom:1rem}
+.grad{background:linear-gradient(110deg,var(--c),var(--b) 55%,#a5b4fc);-webkit-background-clip:text;background-clip:text;color:transparent}
+.lead{color:var(--m);max-width:600px;font-weight:300;font-size:1.08rem}
+.bgfx{position:fixed;inset:0;z-index:-1;background:radial-gradient(ellipse 70% 50% at 80% 10%,rgba(47,139,255,.18),transparent 60%),radial-gradient(ellipse 60% 50% at 10% 80%,rgba(56,208,255,.09),transparent 60%),linear-gradient(rgba(80,160,255,.045) 1px,transparent 1px) 0 0/48px 48px,linear-gradient(90deg,rgba(80,160,255,.045) 1px,transparent 1px) 0 0/48px 48px,var(--bg)}
+#prog{position:fixed;top:0;left:0;height:3px;width:0;background:linear-gradient(90deg,var(--c),var(--b));z-index:80;box-shadow:0 0 14px var(--c)}
+header{position:fixed;top:0;left:0;right:0;z-index:60;padding-top:env(safe-area-inset-top,0px);background:rgba(3,8,22,.6);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);border-bottom:1px solid var(--l)}
+.nb{height:70px;display:flex;align-items:center;justify-content:space-between;gap:1rem}
+.logo{display:flex;align-items:center;gap:.65rem;font:800 1.35rem Sora,sans-serif;letter-spacing:.06em}.logo img{width:38px;height:38px;object-fit:contain}
+nav ul{display:flex;gap:1.7rem;list-style:none}nav a{font-size:.85rem;color:var(--m);transition:.2s;position:relative;padding:.3rem 0}
+nav a::after{content:'';position:absolute;left:0;bottom:0;height:2px;width:0;background:var(--c);transition:.3s}nav a:hover,nav a.on{color:#fff}nav a.on::after,nav a:hover::after{width:100%}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:.5rem;padding:.85rem 1.6rem;border-radius:99px;border:1px solid var(--l);background:var(--g);color:#fff;font:600 .9rem Inter,sans-serif;cursor:pointer;transition:.3s;will-change:transform;position:relative;overflow:hidden}
+.btn:hover{border-color:var(--c);box-shadow:0 0 34px rgba(56,208,255,.35)}
+.btn.p{background:linear-gradient(110deg,var(--b),var(--c));color:#021226;border:0}.btn.p:hover{box-shadow:0 0 44px rgba(47,139,255,.7)}
+.burger{display:none;width:44px;height:44px;border-radius:12px;border:1px solid var(--l);background:none;cursor:pointer}
+.burger span{display:block;width:18px;height:2px;background:#fff;margin:4px auto;transition:.3s}
+.burger[aria-expanded=true] span:nth-child(1){transform:translateY(6px) rotate(45deg)}.burger[aria-expanded=true] span:nth-child(2){opacity:0}.burger[aria-expanded=true] span:nth-child(3){transform:translateY(-6px) rotate(-45deg)}
+@media(max-width:940px){.burger{display:block}.nb>.btn{display:none}
+nav{position:fixed;top:calc(70px + env(safe-area-inset-top,0px));left:0;right:0;background:rgba(3,8,22,.97);max-height:0;overflow:hidden;transition:max-height .4s}nav.open{max-height:480px;border-bottom:1px solid var(--l)}
+nav ul{flex-direction:column;gap:0;padding:.8rem 1.4rem}nav a{display:block;padding:.95rem 0;font-size:1rem;border-bottom:1px solid rgba(255,255,255,.05)}}
+/* hero */
+#inicio{min-height:100svh;display:flex;align-items:center;padding:8rem 0 4rem;overflow:hidden}
+#net{position:absolute;inset:0;width:100%;height:100%;z-index:0}
+.hg{display:grid;grid-template-columns:1.05fr 1fr;gap:3rem;align-items:center;position:relative;z-index:1}
+.pill{display:inline-flex;gap:.6rem;align-items:center;padding:.45rem 1.05rem;border:1px solid var(--l);border-radius:99px;background:rgba(47,139,255,.08);font:.68rem ui-monospace,monospace;letter-spacing:.13em;text-transform:uppercase;color:var(--c);margin-bottom:1.5rem}
+.pill i{width:7px;height:7px;border-radius:50%;background:var(--c);animation:bl 2s infinite}@keyframes bl{50%{opacity:.2}}
+h1{font-size:clamp(2.4rem,5.4vw,4.6rem);font-weight:800;margin-bottom:1.3rem}
+.hp{color:var(--m);font-weight:300;font-size:1.1rem;max-width:500px;margin-bottom:2rem}
+.row{display:flex;gap:.9rem;flex-wrap:wrap}
+.stats{display:flex;gap:2.4rem;margin-top:2.8rem;padding-top:1.7rem;border-top:1px solid var(--l);flex-wrap:wrap}
+.stats b{display:block;font:800 2.3rem Sora,sans-serif;line-height:1}.stats span{font:.64rem ui-monospace,monospace;letter-spacing:.12em;text-transform:uppercase;color:rgba(234,241,255,.45)}
+.stage{position:relative;aspect-ratio:1;width:100%;max-width:520px;margin-left:auto;perspective:900px}
+.stage .lg{position:absolute;inset:12%;width:76%;height:76%;object-fit:contain;opacity:1;z-index:1;filter:drop-shadow(0 0 45px rgba(47,139,255,.75))}.stage::before{content:'';position:absolute;inset:0;border-radius:50%;background:radial-gradient(circle,rgba(47,139,255,.3),transparent 65%);filter:blur(10px)}.stage::after{content:'';position:absolute;inset:3%;border-radius:50%;border:1px dashed rgba(56,208,255,.35);animation:sp 30s linear infinite reverse}
+@keyframes sp{to{transform:rotate(360deg)}}
+.stage .ph{display:none;position:absolute;inset:12% 8%;border-radius:32px;background:linear-gradient(160deg,#fff,#cfe3ff);box-shadow:0 40px 90px -25px rgba(47,139,255,.7),0 0 0 1px rgba(255,255,255,.4);overflow:hidden;transform-style:preserve-3d;transition:transform .15s;animation:fl 6s ease-in-out infinite}
+@keyframes fl{50%{translate:0 -14px}}.stage .ph img{width:100%;height:100%;object-fit:contain;padding:6%}
+.chip{position:absolute;padding:.45rem .95rem;border-radius:99px;border:1px solid var(--l);background:rgba(3,8,22,.78);backdrop-filter:blur(10px);font:600 .72rem Inter,sans-serif;color:var(--c);animation:fl 5s ease-in-out infinite;z-index:3}
+@media(max-width:900px){.hg{grid-template-columns:1fr}.stage{order:-1;max-width:340px;margin:0 auto}#inicio{padding-top:6rem}}
+/* marquee */
+.mq{border-block:1px solid var(--l);background:rgba(47,139,255,.05);overflow:hidden;padding:1rem 0;white-space:nowrap}
+.mq div{display:inline-flex;gap:3rem;animation:mq 32s linear infinite;font:600 .8rem ui-monospace,monospace;letter-spacing:.2em;text-transform:uppercase;color:var(--s);padding-right:3rem}.mq span::before{content:'◆';color:var(--b);margin-right:3rem}
+@keyframes mq{to{transform:translateX(-50%)}}
+/* cards */
+.grid{display:grid;gap:1.2rem;margin-top:2.8rem}.g3{grid-template-columns:repeat(3,1fr)}.g4{grid-template-columns:repeat(4,1fr)}
+@media(max-width:960px){.g4{grid-template-columns:1fr 1fr}}@media(max-width:760px){.g3{grid-template-columns:1fr}}@media(max-width:480px){.g4{grid-template-columns:1fr}}
+.card{background:var(--g);border:1px solid var(--l);border-radius:24px;padding:1.9rem;position:relative;overflow:hidden;transition:border-color .3s,box-shadow .4s,transform .15s;transform-style:preserve-3d}
+.card::before{content:'';position:absolute;inset:0;background:radial-gradient(280px circle at var(--x,50%) var(--y,0),rgba(56,208,255,.16),transparent 60%);opacity:0;transition:.3s;pointer-events:none}
+.card:hover{border-color:rgba(56,208,255,.5);box-shadow:0 26px 60px -22px rgba(47,139,255,.5)}.card:hover::before{opacity:1}
+.card h3{font-size:1.3rem;margin:.8rem 0 .5rem;position:relative}.card p{color:var(--m);font-size:.95rem;position:relative}
+.ic{width:52px;height:52px;border-radius:15px;display:grid;place-items:center;background:rgba(47,139,255,.12);border:1px solid var(--l);font-size:1.4rem;position:relative}
+/* product */
+.pg{display:grid;grid-template-columns:1.05fr 1fr;gap:3rem;align-items:center;margin-top:2.8rem}
+.view{border-radius:30px;border:1px solid var(--l);background:var(--g);padding:1rem}
+.tabs{display:flex;gap:.5rem;margin-bottom:.9rem}.tab{flex:1;padding:.7rem;border-radius:14px;border:1px solid var(--l);background:transparent;color:var(--m);font:600 .85rem Inter,sans-serif;cursor:pointer;transition:.25s}
+.tab[aria-selected=true]{background:linear-gradient(110deg,rgba(47,139,255,.35),rgba(56,208,255,.2));color:#fff;border-color:var(--c)}
+.canvas{position:relative;border-radius:22px;overflow:hidden;aspect-ratio:1/1}
+.canvas figure{position:absolute;inset:0;opacity:0;transition:opacity .5s;pointer-events:none}.canvas figure.on{opacity:1;pointer-events:auto}
+.canvas .a{background:linear-gradient(160deg,#fff,#d6e6ff)}.canvas img{width:100%;height:100%;object-fit:contain}
+.hs{position:absolute;width:34px;height:34px;margin:-17px;border-radius:50%;border:2px solid var(--b);background:rgba(47,139,255,.25);cursor:pointer;color:#fff;font:700 .85rem Inter;display:grid;place-items:center;animation:pl 2s infinite}
+.hs:hover,.hs[aria-expanded=true]{background:var(--b)}@keyframes pl{0%{box-shadow:0 0 0 0 rgba(47,139,255,.6)}100%{box-shadow:0 0 0 16px transparent}}
+.tip{margin-top:.9rem;min-height:3.4rem;padding:.9rem 1.1rem;border-radius:16px;background:rgba(47,139,255,.1);border:1px solid var(--l);font-size:.92rem}
+.tip b{color:var(--c)}
+.ft{list-style:none;display:grid;gap:.85rem;margin:1.4rem 0}.ft li{display:flex;gap:.8rem;color:var(--m);font-size:.97rem}.ft li::before{content:'✓';color:var(--c);font-weight:700}.ft strong{color:#fff}
+.price{display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap;padding-top:1.4rem;border-top:1px solid var(--l)}
+.price small{display:block;font:.65rem ui-monospace,monospace;letter-spacing:.14em;text-transform:uppercase;color:rgba(234,241,255,.45)}.price b{font:800 2.8rem Sora,sans-serif}.price b span{font-size:1rem;font-weight:400;color:var(--m)}
+@media(max-width:900px){.pg{grid-template-columns:1fr}}
+/* steps */
+.steps{position:relative;display:grid;grid-template-columns:repeat(4,1fr);gap:1.2rem;margin-top:3rem}
+.steps::before{content:'';position:absolute;top:34px;left:6%;right:6%;height:2px;background:var(--l)}.steps::after{content:'';position:absolute;top:34px;left:6%;height:2px;width:calc(88% * var(--p,0));background:linear-gradient(90deg,var(--b),var(--c));box-shadow:0 0 12px var(--c)}
+.step{position:relative;text-align:center;z-index:1}.step .n{width:68px;height:68px;border-radius:50%;margin:0 auto 1rem;display:grid;place-items:center;background:var(--bg);border:2px solid var(--l);font:800 1.2rem Sora;transition:.5s}
+.step.on .n{border-color:var(--c);color:var(--c);box-shadow:0 0 26px rgba(56,208,255,.5)}.step h3{font-size:1.15rem}.step p{color:var(--m);font-size:.9rem}
+@media(max-width:760px){.steps{grid-template-columns:1fr 1fr}.steps::before,.steps::after{display:none}}
+/* guide */
+.gd{display:grid;grid-template-columns:.8fr 1.2fr;gap:3rem;align-items:center;margin-top:3rem}.gd img{border-radius:24px;border:1px solid var(--l);box-shadow:0 40px 80px -30px rgba(47,139,255,.6)}
+@media(max-width:800px){.gd{grid-template-columns:1fr}.gd img{max-width:360px;margin:0 auto}}
+/* calc */
+.cg{display:grid;grid-template-columns:1fr 1fr;gap:1.4rem;margin-top:2.8rem}
+.panel{border:1px solid var(--l);border-radius:28px;background:var(--g);padding:1.9rem}
+.seg{display:flex;flex-wrap:wrap;gap:.5rem;margin:1.2rem 0}.sg{padding:.55rem 1.1rem;border-radius:99px;border:1px solid var(--l);background:transparent;color:var(--t);font:500 .88rem Inter;cursor:pointer;transition:.25s}.sg[aria-pressed=true]{background:linear-gradient(110deg,rgba(47,139,255,.4),rgba(56,208,255,.25));border-color:var(--c)}
+.sd{min-height:5.2rem;color:var(--m)}.sd b{display:block;color:#fff;font:700 1.3rem Sora;margin-bottom:.3rem}
+input[type=range]{width:100%;accent-color:var(--c);height:6px;margin:1rem 0 .4rem}
+.num{display:flex;align-items:baseline;justify-content:space-between}.num b{font:800 2.4rem Sora;color:var(--c)}
+.tot{margin-top:1.2rem;padding:1.2rem;border-radius:18px;background:rgba(47,139,255,.1);border:1px solid var(--l)}.tot div{display:flex;justify-content:space-between;font-size:.92rem;color:var(--m);padding:.2rem 0}.tot .t{border-top:1px solid var(--l);margin-top:.5rem;padding-top:.7rem;color:#fff;font-weight:600}.tot .t b{font:800 1.9rem Sora;color:var(--c)}
+.note{font-size:.8rem;color:var(--m);margin:1rem 0;font-style:italic}.vol{display:none;color:var(--c);font-weight:600}.vol.on{display:block}
+@media(max-width:860px){.cg{grid-template-columns:1fr}}
+/* contact */
+.cta{text-align:center;margin-top:3.5rem;padding:clamp(2rem,5vw,3.6rem);border-radius:32px;border:1px solid var(--l);background:radial-gradient(circle at 50% 0,rgba(47,139,255,.22),transparent 60%),var(--g)}
+.cta p{color:var(--m);margin:0 auto 1.6rem;max-width:520px}.cta .row{justify-content:center}.cta h2{font-size:clamp(1.8rem,4vw,2.8rem)}
+.ct a.card{text-align:center;display:block}.ct .ic{margin:0 auto}.ct span{font-size:.85rem;color:var(--m);word-break:break-all;position:relative}
+footer{padding:2.5rem 0;border-top:1px solid var(--l);background:#02050f;text-align:center;color:var(--m);font-size:.85rem}footer .logo{justify-content:center;margin-bottom:.8rem}
+.wa{position:fixed;right:max(1rem,env(safe-area-inset-right,0px));bottom:calc(1rem + env(safe-area-inset-bottom,0px));z-index:70;width:58px;height:58px;border-radius:50%;background:#22c55e;display:grid;place-items:center;font-size:1.6rem;box-shadow:0 10px 30px rgba(34,197,94,.5);transition:transform .25s}.wa:hover{transform:scale(1.1)}
+.rv{opacity:0;transform:translateY(32px);transition:opacity .8s,transform .8s;transition-delay:var(--d,0s)}.rv.in{opacity:1;transform:none}
+:focus-visible{outline:2px solid var(--c);outline-offset:3px}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition-duration:.01ms!important;scroll-behavior:auto!important}.rv{opacity:1;transform:none}}
+</style>
+</head>
+<body>
+<div class="bgfx" aria-hidden="true"></div><div id="prog"></div>
+<header><div class="w nb">
+<a href="#inicio" class="logo" aria-label="INOVEX, inicio"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAWgAAAFECAYAAAAKi6SYAAEAAElFTkSuQmCC" alt="">INOVEX</a>
+<nav id="nav" aria-label="Principal"><ul>
+<li><a href="#inicio">Inicio</a></li><li><a href="#quienes-somos">Quiénes somos</a></li><li><a href="#producto">Producto</a></li><li><a href="#proceso">Proceso</a></li><li><a href="#filosofia">Por qué creemos</a></li><li><a href="#cotiza">Cotiza</a></li><li><a href="#contacto">Contacto</a></li></ul></nav>
+<a href="#cotiza" class="btn p">Cotizar</a>
+<button class="burger" id="bg" aria-label="Abrir menú" aria-expanded="false" aria-controls="nav"><span></span><span></span><span></span></button>
+</div></header>
+
+<main>
+<section id="inicio"><canvas id="net" aria-hidden="true"></canvas>
+<div class="w hg">
+<div>
+<h1>Tecnología que transforma lo tuyo, <span class="grad">más allá de lo imaginable.</span></h1>
+<p class="hp">Microempresa mexicana de robótica educativa. Impulsamos el talento tecnológico de México con kits prácticos, accesibles e innovadores.</p>
+<div class="row"><a class="btn p" href="#producto" data-mag>Ver Kit de Pinza Robótica</a><a class="btn" href="#contacto" data-mag>Informes para escuelas</a></div>
+<div class="stats"><div><b class="grad"><span data-n="480">0</span></b><span>Pesos MXN por kit</span></div><div><b class="grad"><span data-n="2">0</span></b><span>Plataformas: Arduino y ESP32</span></div><div><b class="grad"><span data-n="4">0</span></b><span>Pasos: aprende · ensambla · crea · innova</span></div></div>
+</div>
+<div class="stage" id="stage">
+<img class="lg" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAWgAAAFECAYAAAAKi6SYAAEAAElFTkSuQmCC" alt="">
+<div class="chip" style="top:9%;left:4%">Arduino + ESP32</div>
+<div class="chip" style="bottom:14%;left:1%;animation-delay:-1.7s">$480 MXN · Todo incluido</div>
+<div class="chip" style="top:46%;right:-3%;animation-delay:-3.4s">Diseño 3D Mexicano</div>
+</div>
+</div>
+</section>
+
+<div class="mq" aria-hidden="true"><div>
+<span>Robótica Educativa</span><span>Arduino &amp; ESP32</span><span>Pinza Robótica $480 MXN</span><span>Hecho en México</span><span>Feria Microempresarial</span><span>Aprende · Ensambla · Crea · Innova</span>
+<span>Robótica Educativa</span><span>Arduino &amp; ESP32</span><span>Pinza Robótica $480 MXN</span><span>Hecho en México</span><span>Feria Microempresarial</span><span>Aprende · Ensambla · Crea · Innova</span>
+</div></div>
+
+<section id="quienes-somos"><div class="w">
+<span class="k rv">01 · Quiénes somos</span>
+<h2 class="rv">Innovación robótica <span class="grad">al alcance de todos</span></h2>
+<p class="lead rv">Somos una microempresa mexicana enfocada en democratizar la robótica educativa para estudiantes, docentes y makers, combinando ingeniería mecánica, electrónica y programación.</p>
+<div class="grid g3">
+<article class="card rv"><div class="ic">🦾</div><h3>Robótica accesible</h3><p>Diseñamos hardware educativo de alta utilidad pedagógica a un precio justo para aulas, clubes y proyectos escolares en México.</p></article>
+<article class="card rv" style="--d:.12s"><div class="ic">🎓</div><h3>Aprendizaje práctico</h3><p>Cada kit está pensado para pasar de la teoría a la acción real: mecánica de agarre, control por servomotor y lógica programable.</p></article>
+<article class="card rv" style="--d:.24s"><div class="ic">🇲🇽</div><h3>Talento mexicano</h3><p>Nacimos en una feria microempresarial con la convicción de construir tecnología propia, modular y escalable desde nuestro país.</p></article>
+</div>
+</div></section>
+
+<section id="producto"><div class="w">
+<span class="k rv">02 · Producto estrella</span>
+<h2 class="rv">Kit Integral de <span class="grad">Pinza Robótica</span></h2>
+<p class="lead rv">Todo lo necesario para armar, conectar y programar una pinza robótica funcional compatible con ecosistemas Arduino y ESP32.</p>
+<div class="pg">
+<div class="view rv">
+<div class="tabs" role="tablist"><button class="tab" role="tab" aria-selected="true" data-v="a">Pinza y Kit</button><button class="tab" role="tab" aria-selected="false" data-v="b">Guía Práctica</button></div>
+<div class="canvas">
+<figure class="a on" data-v="a"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAWgAAAFECAYAAAAKi6SYAAEAAElFTkSuQmCC" alt="Pinza robótica articulada INOVEX">
+<button class="hs" style="top:34%;left:44%" aria-expanded="false" data-t="Garra articulada:<b>Dientes de precisión</b> para sujetar piezas ligeras, cubos o componentes en prácticas de automatización.">1</button>
+<button class="hs" style="top:56%;left:54%" aria-expanded="false" data-t="Actuación:<b>Servomotor de torque</b> controlado por señal PWM desde placas Arduino o ESP32.">2</button>
+<button class="hs" style="top:72%;left:47%" aria-expanded="false" data-t="Estructura:<b>Chasis y eslabones</b> optimizados para un montaje rápido y repetible.">3</button>
+</figure>
+<figure class="b" data-v="b"><img src
